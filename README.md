@@ -1,6 +1,36 @@
 # FlyUp Playwright Tests
 
+![JavaScript](https://img.shields.io/badge/Language-JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![Playwright](https://img.shields.io/badge/Tests-Playwright-2EAD33?logo=playwright&logoColor=white)
+![Stripe Sandbox](https://img.shields.io/badge/Payments-Stripe%20Test-635BFF?logo=stripe&logoColor=white)
+[![Source checks](https://github.com/apisara05/playwright-Flyup/actions/workflows/source-checks.yml/badge.svg)](https://github.com/apisara05/playwright-Flyup/actions/workflows/source-checks.yml)
+
+**6 Use Case · 13 เคสหลัก · 2 Login setup · ภาพ วิดีโอ และ Trace**
+
+[เริ่มใช้งาน](#ติดตั้ง) · [คำสั่งรัน](#รันทดสอบ) · [สถานะล่าสุด](#สถานะราย-use-case) · [Roadmap](#แผนพัฒนาต่อ) · [Release](https://github.com/apisara05/playwright-Flyup/releases)
+
 ชุดทดสอบ End-to-End ด้วย **JavaScript และ Playwright** สำหรับเว็บไซต์ https://www.fly-up.app/ ครอบคลุมฟังก์ชันหลัก UC1, UC2, UC3, UC4, UC10 และ UC14
+
+## ตัวอย่างจากเว็บไซต์จริง
+
+![UC2 ค้นหาคำที่ไม่มีผลลัพธ์](docs/images/search-empty-result.png)
+
+ตัวอย่าง UC2 การค้นหาคำที่ไม่มีโปรเจกต์และการแสดงข้อความ “ไม่พบโปรเจกต์” ภาพเก็บวันที่ 9 ตุลาคม 2569 และตัดส่วนเมนูบัญชีออก ภาพนี้เป็นหลักฐานการตรวจหน้าจอ ไม่ใช่หลักฐานว่าชุดเทสทั้งหมดผ่าน
+
+## เส้นทางการทดสอบ
+
+```mermaid
+flowchart LR
+    A[เลือก Use Case] --> B{ต้อง Login?}
+    B -->|ไม่ต้อง| C[ดู ค้นหา กรองโปรเจกต์]
+    B -->|Booster| D[UC4 ลงทุน]
+    B -->|Pioneer| E[UC14 บันทึก Draft]
+    D --> F[Stripe PromptPay Test]
+    F --> G[ตรวจ verified และยอดระดมทุน]
+    C --> H[ภาพ วิดีโอ Trace และ HTML Report]
+    E --> H
+    G --> H
+```
 
 ## สิ่งที่ทดสอบ
 
@@ -131,3 +161,36 @@ package.json
 ## สถานะการตรวจสอบ
 
 มีการตรวจ syntax และค้นพบเคสผ่าน Playwright ข้อมูล Trace ของผู้รันยืนยันว่าชำระ Stripe Test ได้สถานะ verified แต่ยอดระดมทุนยังไม่เพิ่มในรอบนั้น จึงเพิ่ม polling โดยคง assertion เดิมไว้ ยังไม่ยืนยันว่าทุกเคสผ่านหลังแก้ล่าสุด
+
+## สถานะราย Use Case
+
+อัปเดต 9 ตุลาคม 2569 ตารางนี้อ้างอิงโค้ดและหลักฐานในงานนี้ ไม่ใช่ผลรันใหม่ทั้งชุด
+
+| Use Case | จำนวนเคสหลัก | สถานะที่ยืนยันได้ | สิ่งที่ต้องตรวจต่อ |
+|---|---:|---|---|
+| UC1 | 1 | โหลดรายชื่อเทสได้; ตรวจหน้ารายละเอียดจากเว็บ | รันชุดล่าสุด |
+| UC2 | 2 | โหลดรายชื่อเทสได้; มีภาพไม่พบผลค้นหา | รันชุดล่าสุด |
+| UC3 | 1 | โหลดรายชื่อเทสได้; ตรวจปุ่มหมวดหมู่จากเว็บ | รันชุดล่าสุด |
+| UC4 | 7 | Trace ของ TC4_001 ระบุ verified แต่ Fail ที่ยอดระดมทุน | ยืนยัน polling และยอดฝั่งระบบ; 005/006 มีเงื่อนไข Skip |
+| UC10 | 1 | เข้าสู่ระบบ Pioneer ผ่าน Google ในเบราว์เซอร์แอปได้ | ยืนยัน auth ผ่าน Playwright ของผู้รัน |
+| UC14 | 1 | โหลดรายชื่อเทสได้; มี mockup และ helper | รันกับ Draft ทดสอบและบัญชี Pioneer |
+
+รวม 13 เคสหลัก + 2 auth setup = 15 รายการจาก `playwright test --list` ไม่รวมชุด UC14 เต็ม 14 เคสซึ่งอยู่นอก repository ชุดนี้
+
+## แผนพัฒนาต่อ
+
+- [x] แยกไฟล์ตาม Use Case พร้อม mockup
+- [x] บันทึกภาพ วิดีโอ และ Trace
+- [x] อ่าน QR และ authorize Stripe Test Page
+- [x] เพิ่มรออ่านยอดหลังชำระ 60 วินาที
+- [ ] ตรวจและแก้ปัญหา verified แต่ยอดระดมทุนไม่เพิ่ม
+- [ ] ปรับ TC4_005 ให้ตรง requirement และเว็บไซต์ล่าสุด
+- [ ] จัดโปรเจกต์ทดสอบที่มียอดคงเหลือสำหรับ TC4_006
+- [ ] เพิ่ม UC14 จากเคสหลักเป็นครบ 14 เคส
+- [ ] เพิ่มหลักฐานวิดีโอที่ตัดข้อมูลบัญชีแล้ว
+
+## CI และการมีส่วนร่วม
+
+GitHub Actions ตรวจ JavaScript syntax และค้นพบเทสโดยไม่รัน flow ของเว็บ ชื่อ badge คือ Source checks จึงไม่หมายถึง E2E ทุกเคสผ่าน สามารถรายงานปัญหาพร้อม Case ID, expected/actual และภาพที่ตัดข้อมูลบัญชีออกใน [Issues](https://github.com/apisara05/playwright-Flyup/issues)
+
+ดู [CHANGELOG](CHANGELOG.md) และ [Release notes v1.0.0](docs/RELEASE-v1.0.0.md) สำหรับขอบเขตของรุ่น
