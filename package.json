@@ -1,0 +1,23 @@
+{
+  "name": "flyup-main-playwright",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test --project=public",
+    "ui": "playwright test --project=public --ui",
+    "auth": "playwright test --project=auth",
+    "uc14": "playwright test --project=pioneer",
+    "uc14:ui": "playwright test --project=pioneer --ui",
+    "report": "playwright show-report --host 127.0.0.1 --port 0",
+    "uc4": "playwright test --project=uc4 --headed",
+    "uc4:ui": "playwright test --project=uc4 --ui",
+    "auth:uc4": "playwright test --project=booster-auth",
+    "uc4:list": "playwright test --project=uc4 --list"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "dotenv": "^16.4.5",
+    "jsqr": "^1.4.0",
+    "pngjs": "^7.0.0"
+  }
+}

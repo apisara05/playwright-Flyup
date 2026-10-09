@@ -1,0 +1,15 @@
+{
+  "useCase": "UC4",
+  "accountEmail": "booster@example.com",
+  "projectId": 18,
+  "successAmount": 1000,
+  "belowMinimumAmount": 10,
+  "belowOnePercentAmount": 500,
+  "targetFundingGoal": 100000,
+  "originalRemainingAmount": 5000,
+  "originalOverLimitAmount": 6000,
+  "smallRemainingAmount": 500,
+  "smallRemainderInvestment": 490,
+  "closeOutAmount": 3500,
+  "note": "mock เฉพาะข้อมูลกรอก ไม่ mock ยอดโปรเจกต์ API QR หรือผลชำระเงินจริง"
+}
